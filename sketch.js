@@ -26,6 +26,7 @@ let level;
 let player;
 let cam;
 
+// Color to draw the blob and result text shown on HUD
 let blobColor;
 letresultText = "";
 
@@ -52,6 +53,7 @@ function loadLevel(i) {
   cam.y = 0;
   cam.clampToWorld(level.w, level.h);
 
+  // Compute level finish X as the rightmost platform edge
   finishX = 0;
   for (const p of level.platforms) finishX = max(finishX, p.x + p.w);
 
@@ -88,6 +90,7 @@ function draw() {
   level.drawWorld();
   player.draw(blobColor);
 
+  // Display player result near the blob
   fill(0);
   noStroke();
   text(
@@ -98,27 +101,28 @@ function draw() {
 
   cam.end();
 
-  // HUD
+  // HUD and instructions
   fill(0);
   noStroke();
   text("A/D or ←/→ move • Space/W/↑ jump • Fall = respawn", 10, 60);
 
-  // instruction
+  // instruction text
   text("Game Rule: Blob in GREEN → SUCCESS | Blob in RED → FAILED", 10, 18);
   text("The result appears when the blob enters the end block.", 10, 35);
 
   const box = playerBox();
 
-  // touch good → green
+  // touch good → set blob color to green
   for (const b of level.goodBlocks) {
     if (BlobPlayer.overlap(box, b)) blobColor = "green";
   }
 
-  // touch bad → red
+  // touch bad → set blob color to red
   for (const b of level.badBlocks) {
     if (BlobPlayer.overlap(box, b)) blobColor = "red";
   }
 
+  // If player touches the end block, show win/lose based on blob color
   if (
     !resultText &&
     level.endBlock &&

@@ -24,6 +24,7 @@ class WorldLevel {
     this.h = levelJson.world?.h ?? 360;
     this.deathY = levelJson.world?.deathY ?? this.h + 200;
 
+    // Blocks that affect the blob (good/bad) and optional end block
     this.goodBlocks = levelJson.goodBlocks ?? [];
     this.badBlocks = levelJson.badBlocks ?? [];
     this.endBlock = levelJson.endBlock ?? null;
@@ -46,12 +47,15 @@ class WorldLevel {
 
     for (const p of this.platforms) rect(p.x, p.y, p.w, p.h); // x,y = top-left [web:234]
 
+    // Good blocks (green)
     fill("green");
     for (const b of this.goodBlocks) rect(b.x, b.y, b.w, b.h);
 
+    // Bad blocks (red)
     fill("red");
     for (const b of this.badBlocks) rect(b.x, b.y, b.w, b.h);
 
+    // End block (neutral grey)
     if (this.endBlock) {
       fill("grey");
       noStroke();
